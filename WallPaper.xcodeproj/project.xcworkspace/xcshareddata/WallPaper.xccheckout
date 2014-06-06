@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>4ECE6781-D92C-4FE2-BE1F-D829022836C5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>WallPaper</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E7DFE477-5856-4401-B72A-6F4710AB645E</key>
+		<string>https://github.com/Jvanbev/BillSplitterRemastered.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>WallPaper/WallPaper.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E7DFE477-5856-4401-B72A-6F4710AB645E</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Jvanbev/BillSplitterRemastered.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E7DFE477-5856-4401-B72A-6F4710AB645E</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E7DFE477-5856-4401-B72A-6F4710AB645E</string>
+			<key>IDESourceControlWCCName</key>
+			<string>iPhoneApps</string>
+		</dict>
+	</array>
+</dict>
+</plist>
