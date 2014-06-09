@@ -8,6 +8,9 @@
 
 #import "ViewController.h"
 #import "AFNetworking.h"
+#import "SVProgressHUD.h"
+
+
 
 
 @interface ViewController ()
@@ -90,6 +93,8 @@ NSInteger wallPaperIndex;
     }
     self.ImageView.userInteractionEnabled = NO; //Disable image view tapping when the user just tapped it
     [self.indicator startAnimating];
+    //[SVProgressHUD show];
+
 
     if([self.tabBarItem.title isEqualToString:@"AFNetworking"]){
         NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.wallPaperArrayOfStringURLS objectAtIndex:wallPaperIndex]]];
@@ -99,9 +104,13 @@ NSInteger wallPaperIndex;
             self.ImageView.image = image;
             self.ImageView.userInteractionEnabled = YES; //once image is done loading, user can tap again for next image.
             [self.indicator stopAnimating];
+            //[SVProgressHUD dismiss];
+
             wallPaperIndex +=1;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [self.indicator stopAnimating];
+            //[SVProgressHUD dismiss];
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Image"
                                                                 message:[error localizedDescription]
                                                                delegate:nil
@@ -128,10 +137,13 @@ NSInteger wallPaperIndex;
                                                               cancelButtonTitle:@"Ok"
                                                               otherButtonTitles:nil];
                     [alertView show];
+                    [self.indicator stopAnimating];
+                    //[SVProgressHUD dismiss];
                 } else {
                     self.ImageView.image = image;
                     self.ImageView.userInteractionEnabled = YES; //once image is done loading, user can tap again for next image.
                     [self.indicator stopAnimating];
+                    //[SVProgressHUD dismiss];
                     wallPaperIndex +=1;
                 }
             });

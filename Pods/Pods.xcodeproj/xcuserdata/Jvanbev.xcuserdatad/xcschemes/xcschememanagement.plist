@@ -4,12 +4,17 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-WallPaperTests-AFNetworking.xcscheme</key>
+		<key>Pods-AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-WallPaperTests.xcscheme</key>
+		<key>Pods-SVProgressHUD.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>B644A81C0F90459FADD0ACFC</key>
+		<key>1FBB20DE79F34638BFB5EE31</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F3CB8F98C9A74E85AD8342EB</key>
+		<key>59C410CC0BCE4CC8B99FCE99</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>71087E7D928A41E1BED8A391</key>
 		<dict>
 			<key>primary</key>
 			<true/>
