@@ -91,65 +91,91 @@ NSInteger wallPaperIndex;
     if(wallPaperIndex == [self.wallPaperArrayOfStringURLS count]){
         wallPaperIndex = 0;
     }
+    
+    [UIView animateWithDuration:.5 animations:^{
+        self.ImageView.alpha = 0;
+    }];
+    
     self.ImageView.userInteractionEnabled = NO; //Disable image view tapping when the user just tapped it
     [self.indicator startAnimating];
     //[SVProgressHUD show];
-
+    NSURL *url = [NSURL URLWithString:[self.wallPaperArrayOfStringURLS objectAtIndex:wallPaperIndex]];
 
     if([self.tabBarItem.title isEqualToString:@"AFNetworking"]){
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.wallPaperArrayOfStringURLS objectAtIndex:wallPaperIndex]]];
-        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-            UIImage *image = [[UIImage alloc] initWithData:responseObject];
+        [self fetchImageViaAFNetworkingWithURL:url];
+    } else {
+        [self fetchImageViaStandardGrandCentralDispatchWithURL:url andCompletionBlock:^(UIImage *image) {
             self.ImageView.image = image;
             self.ImageView.userInteractionEnabled = YES; //once image is done loading, user can tap again for next image.
             [self.indicator stopAnimating];
+            [UIView animateWithDuration:.5 animations:^{
+                self.ImageView.alpha = 1;
+            }];
             //[SVProgressHUD dismiss];
-
             wallPaperIndex +=1;
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [self.indicator stopAnimating];
-            //[SVProgressHUD dismiss];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Image"
-                                                                message:[error localizedDescription]
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+        }];
+    }
+
+}
+
+-(void)fetchImageViaAFNetworkingWithURL:(NSURL *)url
+{
+    
+    [UIView animateWithDuration:.5 animations:^{
+        self.ImageView.alpha = 0;
+    }];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        UIImage *image = [[UIImage alloc] initWithData:responseObject];
+        self.ImageView.image = image;
+        self.ImageView.userInteractionEnabled = YES; //once image is done loading, user can tap again for next image.
+        [self.indicator stopAnimating];
+        //[SVProgressHUD dismiss];
+        
+        wallPaperIndex +=1;
+        [UIView animateWithDuration:.5 animations:^{
+            self.ImageView.alpha = 1;
         }];
         
-        [operation start];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self.indicator stopAnimating];
+        //[SVProgressHUD dismiss];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Image"
+                                                            message:[error localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"Ok"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }];
+    
+    [operation start];
 
-    } else {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^ {
-            NSURL *url = [NSURL URLWithString:[self.wallPaperArrayOfStringURLS objectAtIndex:wallPaperIndex]];
-            NSError *error = nil;
-            NSData *imageData = [[NSData alloc] initWithContentsOfURL:url options:NSDataReadingUncached error:&error];
-            UIImage *image = [[UIImage alloc] initWithData:imageData];
+}
+
+-(void)fetchImageViaStandardGrandCentralDispatchWithURL:(NSURL *)url andCompletionBlock:(void (^)(UIImage *))completionBlock
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^ {
+        NSError *error = nil;
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL:url options:NSDataReadingUncached error:&error];
+        UIImage *image = [[UIImage alloc] initWithData:imageData];
         
-            //Once the data has been retrieved and stored into an image, completion block must go back to main thread and set visual elements.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if(error){
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Image"
-                                                                        message:[error localizedDescription]
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"Ok"
-                                                              otherButtonTitles:nil];
-                    [alertView show];
-                    [self.indicator stopAnimating];
-                    //[SVProgressHUD dismiss];
-                } else {
-                    self.ImageView.image = image;
-                    self.ImageView.userInteractionEnabled = YES; //once image is done loading, user can tap again for next image.
-                    [self.indicator stopAnimating];
-                    //[SVProgressHUD dismiss];
-                    wallPaperIndex +=1;
-                }
-            });
+        //Once the data has been retrieved and stored into an image, completion block must go back to main thread and set visual elements.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(error){
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Image"
+                                                                    message:[error localizedDescription]
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+                [self.indicator stopAnimating];
+                //[SVProgressHUD dismiss];
+            } else {
+                completionBlock(image);
+            }
         });
-        
-    }
+    });
 
 }
 
